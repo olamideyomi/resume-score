@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState, useRef } from "react";
+import logo from "./assets/images/logo_transparent.png";
+import bgImage from "./assets/images/background1.jpg";
+import ScoreDisplay from "./components/Score/ScoreDisplay";
 
 function App() {
+  const [score, setScore] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleRetake = () => {
+    setScore(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <img src={logo} alt="Company Logo" className="logo" />
+      <div className="image-container">
+        <img src={bgImage} alt="Background" className="image-background" />
+        <div className="file-input-container">
+          <input type="file" id="file" className="file-input" accept=".pdf,.doc,.docx" ref={fileInputRef} />
+          <label htmlFor="file" className="upload-label">Upload Resume</label>
+        </div>
+        <div className="overlay"></div>
+      </div>
+      {score && <ScoreDisplay score={score} onRetake={handleRetake} />}
     </div>
   );
 }
